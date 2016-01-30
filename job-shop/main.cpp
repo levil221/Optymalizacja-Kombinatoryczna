@@ -121,7 +121,7 @@ void wczytaj(vector<zad> &o1, vector < konserwacja> &o2, string filename,int ii)
 		getline(file, buf);
 		ile1 = atoi(buf.c_str());
 		ii = ile1;
-		for (int i = 0; i < ile1; i++)
+		for (int i = 0; i <= ile1; i++)
 		{
 			getline(file, buf, ';');
 			tempZad.czas_op1 = atoi(buf.c_str());
@@ -138,7 +138,7 @@ void wczytaj(vector<zad> &o1, vector < konserwacja> &o2, string filename,int ii)
 		getline(file, buf);
 		ile1 = atoi(buf.c_str());
 
-		for (int i = 0; i < ile1; i++)
+		for (int i = 0; i <= ile1; i++)
 		{
 			getline(file, buf, ';');
 			getline(file, buf, ';');

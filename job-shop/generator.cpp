@@ -15,7 +15,7 @@ void generator::generujPrzerwy()
 	for (int i = 0; i <= ilosc_przerw; i++)
 	{
 		
-		temp.begin = temp.end + rand()%100+1;
+		temp.begin = temp.end + rand()%120+20;
 		temp.time = rand() % 20 + 1;
 		temp.end = temp.begin + temp.time;
 		przerwy.push_back(temp);
