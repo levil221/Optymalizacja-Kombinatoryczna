@@ -60,22 +60,22 @@ int main()
 			populus.push_back(*tmp);
 			populus[i].inicializuj(oZad, oKonserwa);
 		}
-		/*	for (int x = 0; x <= 300; x++)									//Ewolucja
+		for (int x = 0; x <= 300; x++)									//Ewolucja
 			{
-				for (int i = 0; i <= licznoscPopulacji / 2; i += 2)			//selekcja
+				for (int i = 0; i <= licznoscPopulacji / 2; i+=2)			//selekcja
 				{
 					int a = populus[i].insta.czas_m1 < populus[i].insta.czas_m2 ? populus[i].insta.czas_m2 : populus[i].insta.czas_m1;
 					int b = populus[i + 1].insta.czas_m1 < populus[i + 1].insta.czas_m2 ? populus[i + 1].insta.czas_m2 : populus[i + 1].insta.czas_m1;
 					if (a < b)
 					{
-						populus[i] = populus[i + 1];
+						populus[i + 1] = populus[i ];
 					}
 					else
 					{
-						populus[i + 1] = populus[i];
+						populus[i] = populus[i+1];
 					}
 				}
-				for (int i = 0; i <= licznoscPopulacji / 2; i += 2)			//przetasowanie
+				/*	for (int i = 0; i <= licznoscPopulacji / 2; i += 2)			//przetasowanie
 				{
 					populacja temp;
 					int a = rand() % licznoscPopulacji;
@@ -95,9 +95,13 @@ int main()
 					int a = rand() % licznoscPopulacji;
 					int b = rand() % licznoscPopulacji;
 					populus[a].krzyzowanie(populus[b].insta);
-				}
-			}*/
-		
+				}*/
+			
+		_getch();
+		system("cls");
+		for (int x = 0; x <= licznoscPopulacji; x++)
+			populus[x].wypisz();
+		}
 	}
 	break;
 	}

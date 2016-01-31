@@ -12,14 +12,15 @@ class populacja
 {
 public:
 	instancja insta;
+	int ilewpopulacji;
 public:
 	populacja();
 	populacja(int ile);
 
-	void wczytaj(string name);
+	void wypisz();
 	void inicializuj(vector<zad> &oZad, vector<konserwacja> oKonserwa);
 	void krzyzowanie(instancja &b);
 	void mutacja();
-	
+	int find(int zadanie,int maszyna);
 
 };

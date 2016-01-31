@@ -20,12 +20,12 @@ void instancja::inicjalizuj(vector<zad> oZad)
 	//////////////////////////////////////
 	cout << "********************\n";
 	////////////////////////////////////
-	for (int i = 0; i < oZad.size(); i++)
+	for (int i = 0; i < oZad.size()-1; i++)
 	{
-		zad1 = rand() % oZad.size();
-		zad2 = rand() % oZad.size();
+		zad1 = rand() % (oZad.size() - 1) + 1;
+		zad2 = rand() % (oZad.size() - 1) + 1;
 		while (zad1 == zad2)
-			zad1 = rand() % oZad.size();
+			zad1 = rand() % (oZad.size() - 1) + 1;
 		dd++;
 		zapetlenie = 0;
 		while (dodano < dd)
@@ -78,7 +78,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 				this->czas[2][i].end = this->czas[2][i].time + this->czas[2][i].begin;
 				break;
 			}
-			zad1 = rand() % oZad.size();
+			zad1 = rand() % (oZad.size()-1) + 1;
 			zapetlenie++;
 		}
 			++dd;
@@ -171,13 +171,14 @@ void instancja::inicjalizuj(vector<zad> oZad)
 				this->czas[oZad[zad2].maszyna_op2][i].end = this->czas[oZad[zad2].maszyna_op2][i].time + this->czas[oZad[zad2].maszyna_op2][i].begin;
 				break;
 			}
-			zad2 = rand() % oZad.size();
+			zad2 = rand() % (oZad.size() - 1) + 1;
 			zapetlenie++;
 		}
-	//	cout << this->rozwiazanie[1][i].zdanie<<"op"<< this->rozwiazanie[1][i].operacja <<"->" <<this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zdanie << "op" << this->rozwiazanie[2][i].operacja << "->"<< this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
+		//debug only
+		//cout << this->rozwiazanie[1][i].zdanie<<"op"<< this->rozwiazanie[1][i].operacja <<"->" <<this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zdanie << "op" << this->rozwiazanie[2][i].operacja << "->"<< this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
 	}
 	///////////////////////////////////////////
-	for (int i = 0; i < oZad.size(); i++)
+	for (int i = 0; i < oZad.size()-1; i++)
 	{
 		oZad[i].op1 = false;
 		oZad[i].op2 = false;
@@ -199,35 +200,41 @@ void instancja::wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad)
 ///////////////////////////////////////////////////////////////////////////////////
 	for (int i = 0; i < ile; i++)
 	{
+		//for (int x = 0; x < ile; x++)
+		//	cout << czas[2][x].begin << " " << czas[2][x].time << " " << czas[2][x].end << endl;
 		if (oKonserwa[licznik_przerw].begin < czas_m2 + this->czas[2][i].time &&licznik_przerw < oKonserwa.size())	//czy nachodzi na przerwe
 		{
-			licznik_przerw = 0;
+			
 			iddletime = oKonserwa[licznik_przerw].begin - czas_m2;													//<- ile musimy czekac do przerwy
 			finetime = czas_m2 + czas[2][i].time + oKonserwa[licznik_przerw].time + (czas[2][i].time*0.3) + 1;		//<-iel wyniesie czas z wejsciem na przerwe+kara
 			temptime = iddletime + czas[2][i].time + czas_m2 + oKonserwa[licznik_przerw].time;						//<-ile wyniesie czas z czekaniem az minie przerwa
 			if (temptime < finetime)
 				temp = temptime;
 			else temp = finetime;
-			licznik_przerw++;
+			licznik_przerw = licznik_przerw<oKonserwa.size()-1 ? licznik_przerw+1:oKonserwa.size()-1;
 			if(licznik_przerw < oKonserwa.size()-1)
 				while ( temp > oKonserwa[licznik_przerw].begin )			//<-czy nachodzimy na kolejne przerwy ?
 				{
 					iddletime += oKonserwa[licznik_przerw].begin - oKonserwa[licznik_przerw - 1].end;					//<-doliczmy czas pomiêdzy przerwami technicznymi
-					finetime += (czas[2][i].time*0.3) + 1 + (oKonserwa[licznik_przerw].end-finetime);					//<-doliczamy czas kary plus dlugosc przerwy
+					finetime += (czas[2][i].time*0.3) + 1 + oKonserwa[licznik_przerw].time;					//<-doliczamy czas kary plus dlugosc przerwy
 					temptime += iddletime + oKonserwa[licznik_przerw].time;
 					if (temptime < finetime)
 						temp = temptime;
 					else temp = finetime;
-					licznik_przerw++;
+					licznik_przerw = licznik_przerw<oKonserwa.size() - 1 ? licznik_przerw + 1 : oKonserwa.size() - 1;
 				}
 			if (temptime < finetime)																				//<-co lepsze
 			{
-				this->czas[2][i].begin = oKonserwa[licznik_przerw - 1].end;												//czekamy wiec zaczyna sie po ostatniej przerwie na jaka naszedl
+				this->czas[2][i].begin = oKonserwa[licznik_przerw-1 ].end;												//czekamy wiec zaczyna sie po ostatniej przerwie na jaka naszedl
 				this->czas[2][i].end = temptime;
 				this->czas_m2 = temptime;
+				//cout << "przerwa-> ";
 			}
 			else
+			{
 				this->czas_m2 = this->czas[2][i].end = finetime;																//zaczyna sie w swoim starcie i konczy sie po ostatniej rpzerwie na jaka naszedl +kary
+			//	cout << " KARA-> ";
+			}
 			if (rozwiazanie[2][i].operacja == 1)
 				oZad[rozwiazanie[2][i].zdanie].czas_konca = czas_m2;
 			this->update(i, oZad);
@@ -235,7 +242,7 @@ void instancja::wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad)
 		}
 		else
 		{
-			czas_m2 = czas[2][i].end;
+			czas_m2 += this->czas[2][i].time;
 		}
 		
 		//oZad[rozwiazanie[2][i].zdanie].czas_konca = czas_m2;

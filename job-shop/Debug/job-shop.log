@@ -1,0 +1,11 @@
+﻿  instancja.cpp
+c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(23): warning C4018: '<': signed/unsigned mismatch
+c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(181): warning C4018: '<': signed/unsigned mismatch
+c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(205): warning C4018: '<': signed/unsigned mismatch
+c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(209): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(214): warning C4018: '<': signed/unsigned mismatch
+c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(215): warning C4018: '<': signed/unsigned mismatch
+c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(219): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(224): warning C4018: '<': signed/unsigned mismatch
+c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(193): warning C4101: 'nrzadania': unreferenced local variable
+  job-shop.vcxproj -> C:\Users\Krzysztof\Documents\GitHub\Optymalizacja-Kombinatoryczna\job-shop\Debug\job-shop.exe
