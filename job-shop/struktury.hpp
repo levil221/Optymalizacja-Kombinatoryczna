@@ -27,8 +27,8 @@ struct czasOperacji
 
 struct task
 {
-	int zdanie;
-	int operacja;
+	int zadanie,
+		operacja;
 	
 };
 
