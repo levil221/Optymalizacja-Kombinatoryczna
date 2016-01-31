@@ -20,7 +20,7 @@ public:
 	void wypisz();
 	void inicializuj(vector<zad> &oZad, vector<konserwacja> oKonserwa);
 	void krzyzowanie(instancja &b);
-	void mutacja();
+	void mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa);
 	int find(int zadanie,int maszyna);
 
 };

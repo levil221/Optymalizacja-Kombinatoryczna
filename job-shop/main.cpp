@@ -75,7 +75,7 @@ int main()
 						populus[i] = populus[i+1];
 					}
 				}
-				/*	for (int i = 0; i <= licznoscPopulacji / 2; i += 2)			//przetasowanie
+					for (int i = 0; i <= licznoscPopulacji / 2; i += 2)			//przetasowanie
 				{
 					populacja temp;
 					int a = rand() % licznoscPopulacji;
@@ -87,8 +87,8 @@ int main()
 				int iloscMutacji = rand() % (int)(licznoscPopulacji*0.2) + (int)(licznoscPopulacji*0.1);
 				for (int i = 0; i <= iloscMutacji; i += 2)					//mutacja
 				{
-					populus[rand() % licznoscPopulacji].mutacja();
-				}
+					populus[rand() % licznoscPopulacji].mutacja(oZad,oKonserwa);
+				}/*
 				int iloscCrossOver = licznoscPopulacji - iloscMutacji;
 				for (int i = 0; i <= iloscCrossOver / 2; i += 2)			//krzyzowanie
 				{

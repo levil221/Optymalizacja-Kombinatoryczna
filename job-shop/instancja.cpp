@@ -247,7 +247,7 @@ void instancja::wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad)
 		
 		//oZad[rozwiazanie[2][i].zdanie].czas_konca = czas_m2;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////		
-		cout << this->rozwiazanie[1][i].zdanie << "op" << this->rozwiazanie[1][i].operacja << "->" << this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zdanie << "op" << this->rozwiazanie[2][i].operacja << "->" << this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
+	//	cout << this->rozwiazanie[1][i].zdanie << "op" << this->rozwiazanie[1][i].operacja << "->" << this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zdanie << "op" << this->rozwiazanie[2][i].operacja << "->" << this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
 		
 	}
 }

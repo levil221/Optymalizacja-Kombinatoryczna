@@ -23,26 +23,28 @@ void populacja::inicializuj(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 	insta.wyliczCzas(oKonserwa,oZad);
 	for (int i = 0; i < oZad.size(); i++)
 		oZad[i].czas_konca = 0;
-	insta.wyswietl();
+	//insta.wyswietl();
 }
 
 void populacja::krzyzowanie(instancja &b)
 {
+
 }
 
-void populacja::mutacja()
+void populacja::mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 {
 	int a = rand() % ilewpopulacji +1,
 		b = rand() % ilewpopulacji + 1,
-		a1,a2,
-		b1,b2,
+		a1,a2,//indesky
+		b1,b2,//indeksy
 		operacja,losowanie;
-	task taska1, taska2;
+	task taska1, taska2;//kopia zadania
+	czasOperacji czasa1, czasa2;//kopia czasu
 
 	if (insta.rozwiazanie[1][find(a, 1)].operacja == 1)//jezeli na maszynie 1 opecaja 1 to szukamy na maszynie 1 zadania ktore rowniez ma op1
 	{
 		a1 = find(a, 1);
-		b2 = find(a, 2);
+		a2 = find(a, 2);
 		operacja = 1;
 	}
 	else {
@@ -51,18 +53,47 @@ void populacja::mutacja()
 		operacja = 2;
 	}
 	losowanie = find(b, 1);
-	while (insta.rozwiazanie[1][losowanie].operacja != operacja)
+	if (insta.rozwiazanie[1][losowanie].operacja == operacja&& a != b)
 	{
-		b = rand() % ilewpopulacji + 1;
-		losowanie = find(b, 1);
-		if (insta.rozwiazanie[1][find(b, 1)].operacja == 1)
+		b1 = losowanie;
+		b2 = find(b,2);
+	}else
+			while (insta.rozwiazanie[1][losowanie].operacja != operacja )
 		{
-			a1 = find(b, 1);
-			b2 = find(b, 2);
+			b = rand() % ilewpopulacji + 1;
+			while(a==b)
+				b = rand() % ilewpopulacji + 1;
+			losowanie = find(b, 1);
+			if (insta.rozwiazanie[1][losowanie].operacja == operacja)
+			{
+				b1 = losowanie;
+				b2 = find(b,2);
+			}
 		}
-	}
-	
-	
+	insta.wyswietl();//przed zmianmi
+	//zamieniamy
+	cout << "\n zamiamiany na m1: " << insta.rozwiazanie[1][a1].zdanie << " z " << insta.rozwiazanie[1][b1].zdanie << endl;
+	cout << " zamiamiany na m2: " << insta.rozwiazanie[2][a2].zdanie << " z " << insta.rozwiazanie[2][b2].zdanie << endl;
+	//do tempa
+	taska1 = insta.rozwiazanie[1][a1];
+	czasa1 = insta.czas[1][a1];
+	taska2 = insta.rozwiazanie[2][a2];
+	czasa2 = insta.czas[2][a2];
+	//nadpisanie
+	insta.rozwiazanie[1][a1] = insta.rozwiazanie[1][b1];
+	insta.czas[1][a1] = insta.czas[1][b1];
+	insta.rozwiazanie[2][a2] = insta.rozwiazanie[2][b2];
+	insta.czas[2][a2] = insta.czas[2][b2];
+	//zastapienie
+	insta.rozwiazanie[1][b1] = taska1;
+	insta.czas[1][b1] = czasa1;
+	insta.rozwiazanie[2][b2] = taska2;
+	insta.czas[2][b2] = czasa2;
+	insta.update(0,oZad);
+	insta.wyliczCzas(oKonserwa,oZad);
+	insta.wyswietl();// po zmianie
+
+
 }
 
 int populacja::find(int zadanie,int maszyna)
