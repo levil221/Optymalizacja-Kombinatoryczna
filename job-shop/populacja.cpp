@@ -21,14 +21,84 @@ void populacja::inicializuj(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 	for (int i = 0; i < oZad.size(); i++)
 		oZad[i].czas_konca = 0;
 	insta.wyliczCzas(oKonserwa,oZad);
-	for (int i = 0; i < oZad.size(); i++)
-		oZad[i].czas_konca = 0;
 	//insta.wyswietl();
 }
 
-void populacja::krzyzowanie(instancja &b)
+void populacja::krzyzowanie(instancja &b,int maszyna)
 {
+	int *taba = new int[ilewpopulacji];
+	int *tabb = new int[ilewpopulacji];
+	task *tempTaska = new task[ilewpopulacji];
+	task *tempTaskb = new task[ilewpopulacji];
+	bool jest = false;
 
+	for (int i = 0; i <= ilewpopulacji ; i++)// co mamy a czego nam brakuje
+	{
+		if (i <= ilewpopulacji / 2)
+		{
+			taba[this->insta.rozwiazanie[maszyna][i].zadanie] = 1;
+			tabb[b.rozwiazanie[maszyna][i].zadanie] = 1;
+		}
+		else
+		{
+			taba[this->insta.rozwiazanie[maszyna][i].zadanie] = 0;
+			tabb[b.rozwiazanie[maszyna][i].zadanie] = 0;
+			tempTaska[i] = this->insta.rozwiazanie[maszyna][i];//zapamietujemy co bedziemy zamieniac
+			tempTaskb[i] = b.rozwiazanie[maszyna][i];
+		}
+	}
+
+	for (int i = ilewpopulacji / 2 + 1; i <= ilewpopulacji; i++)
+	{
+		if (tabb[tempTaska[i].zadanie] == 0)
+			b.rozwiazanie[maszyna][i] = tempTaska[i];
+		else
+		{
+			for (int j = 0; j <= ilewpopulacji; j++)
+			{
+				jest = false;
+				if (tabb[j] == 0)
+					for (int x = ilewpopulacji / 2 + 1; i < ilewpopulacji; i++)
+						if (tempTaska[x].zadanie == j)
+						{
+							jest = true;
+							break;
+						}
+						else
+							jest = false;
+				if (!jest)
+				{
+					b.rozwiazanie[maszyna][i] = tempTaska[j];
+					break;
+				}
+			}
+		}
+
+		if (taba[tempTaskb[i].zadanie] == 0)
+			this->insta.rozwiazanie[maszyna][i] = tempTaskb[i];
+		else
+		{
+			for (int j = 0; j <= ilewpopulacji; j++)
+			{
+				jest = false;
+				if (taba[j] == 0)
+					for (int x = ilewpopulacji / 2 + 1; i < ilewpopulacji; i++)
+						if (tempTaskb[x].zadanie == j)
+						{
+							jest = true;
+							break;
+						}
+						else
+							jest = false;
+				if (!jest)
+				{
+					this->insta.rozwiazanie[maszyna][i] = tempTaskb[j];
+					break;
+				}
+			}
+		}
+	}
+	
 }
 
 void populacja::mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa)
@@ -99,6 +169,8 @@ void populacja::mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 int populacja::find(int zadanie,int maszyna)
 {
 	for (int i = 0; i <= ilewpopulacji; i++)
-		if (insta.rozwiazanie[maszyna][i].zdanie == zadanie)
+		if (insta.rozwiazanie[maszyna][i].zadanie == zadanie)
 			return i;
 }
+
+

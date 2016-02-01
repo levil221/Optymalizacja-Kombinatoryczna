@@ -32,7 +32,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 		{
 			if (oZad[zad1].maszyna_op1 == 1 && oZad[zad1].op1 == false)//op1 na m1
 			{
-			this->rozwiazanie[1][i].zdanie = zad1;
+			this->rozwiazanie[1][i].zadanie = zad1;
 			this->rozwiazanie[1][i].operacja = 1;
 				oZad[zad1].op1 = true;
 				dd = ++dodano;
@@ -44,7 +44,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 			}
 			else if (oZad[zad1].maszyna_op1 == 2 && oZad[zad1].op1 == false)//op1 na m2
 			{
-				this->rozwiazanie[2][i].zdanie = zad1;
+				this->rozwiazanie[2][i].zadanie = zad1;
 				this->rozwiazanie[2][i].operacja = 1;
 				oZad[zad1].op1 = true;
 				dd = ++dodano;
@@ -56,7 +56,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 			}
 			else if (oZad[zad1].maszyna_op2 == 1 && oZad[zad1].op1 == true && oZad[zad1].op2 == false && oZad[zad1].czas_konca < currenttime_m1)//op2 na m1
 			{
-				this->rozwiazanie[1][i].zdanie = zad1;
+				this->rozwiazanie[1][i].zadanie = zad1;
 				this->rozwiazanie[1][i].operacja = 2;
 				oZad[zad1].op2 = true;
 				dd = ++dodano;
@@ -68,7 +68,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 			}
 			else if (oZad[zad1].maszyna_op2 == 2 && oZad[zad1].op1 == true && oZad[zad1].op2 == false && oZad[zad1].czas_konca < currenttime_m2)//op2 na m2
 			{
-				this->rozwiazanie[2][i].zdanie = zad1;
+				this->rozwiazanie[2][i].zadanie = zad1;
 				this->rozwiazanie[2][i].operacja = 2;
 				oZad[zad1].op2 = true;
 				dd = ++dodano;
@@ -89,7 +89,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 			{				
 				if (oZad[zad2].maszyna_op1 == 2 && oZad[zad2].op1 == false)//op1 na m2
 				{
-					this->rozwiazanie[2][i].zdanie = zad2;
+					this->rozwiazanie[2][i].zadanie = zad2;
 					this->rozwiazanie[2][i].operacja = 1;
 					oZad[zad2].op1 = true;
 					dd = ++dodano;
@@ -102,7 +102,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 				}
 				else if (oZad[zad2].maszyna_op2 == 2 && oZad[zad2].op1 == true && oZad[zad2].op2 == false && oZad[zad2].czas_konca < currenttime_m2)//op2 na m2
 				{
-					this->rozwiazanie[2][i].zdanie = zad2;
+					this->rozwiazanie[2][i].zadanie = zad2;
 					this->rozwiazanie[2][i].operacja = 2;
 					oZad[zad2].op2 = true;
 					dd = ++dodano;
@@ -125,7 +125,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 			{
 				if (oZad[zad2].maszyna_op1 == 1 && oZad[zad2].op1 == false)
 				{
-					this->rozwiazanie[1][i].zdanie = zad2;
+					this->rozwiazanie[1][i].zadanie = zad2;
 					this->rozwiazanie[1][i].operacja = 1;
 					oZad[zad2].op1 = true;
 					dd = ++dodano;
@@ -138,7 +138,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 				}
 				else	if (oZad[zad2].maszyna_op2 == 1 && oZad[zad2].op1 == true && oZad[zad2].op2 == false && oZad[zad2].czas_konca < currenttime_m1)
 				{
-					this->rozwiazanie[1][i].zdanie = zad2;
+					this->rozwiazanie[1][i].zadanie = zad2;
 					this->rozwiazanie[1][i].operacja = 2;
 					oZad[zad2].op2 = true;
 					dd = ++dodano;
@@ -161,7 +161,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 			if ((oZad[zad2].czas_konca > currenttime_m1 && zapetlenie > 1000) || (oZad[zad2].czas_konca > currenttime_m2 && zapetlenie > 1000))//na zapetlajace sie !@#
 			{
 				// nr maszyny pobieramy z zadabia ktore sie zapetla
-				this->rozwiazanie[oZad[zad2].maszyna_op2][i].zdanie = zad2;
+				this->rozwiazanie[oZad[zad2].maszyna_op2][i].zadanie = zad2;
 				this->rozwiazanie[oZad[zad2].maszyna_op2][i].operacja = 2;
 				oZad[zad2].op2 = true;
 				dd = ++dodano;
@@ -236,7 +236,7 @@ void instancja::wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad)
 			//	cout << " KARA-> ";
 			}
 			if (rozwiazanie[2][i].operacja == 1)
-				oZad[rozwiazanie[2][i].zdanie].czas_konca = czas_m2;
+				oZad[rozwiazanie[2][i].zadanie].czas_konca = czas_m2;
 			this->update(i, oZad);
 			
 		}
@@ -247,7 +247,7 @@ void instancja::wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad)
 		
 		//oZad[rozwiazanie[2][i].zdanie].czas_konca = czas_m2;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////		
-	//	cout << this->rozwiazanie[1][i].zdanie << "op" << this->rozwiazanie[1][i].operacja << "->" << this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zdanie << "op" << this->rozwiazanie[2][i].operacja << "->" << this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
+		cout << this->rozwiazanie[1][i].zadanie << "op" << this->rozwiazanie[1][i].operacja << "->" << this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zadanie << "op" << this->rozwiazanie[2][i].operacja << "->" << this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
 		
 	}
 }
@@ -285,7 +285,7 @@ void instancja::update(int start, vector<zad> &oZad)																				// weryf
 	}
 		
 	for (int i = 0; i < start; i++)
-		if (rozwiazanie[1][start].zdanie == rozwiazanie[2][i].zdanie)
+		if (rozwiazanie[1][start].zadanie == rozwiazanie[2][i].zadanie)
 			findtask = i;
 	findtaskif = findtask <= 0 ? false : true;
 	if (!findtaskif)

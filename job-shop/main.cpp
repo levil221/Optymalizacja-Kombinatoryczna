@@ -88,14 +88,15 @@ int main()
 				for (int i = 0; i <= iloscMutacji; i += 2)					//mutacja
 				{
 					populus[rand() % licznoscPopulacji].mutacja(oZad,oKonserwa);
-				}/*
+				}
 				int iloscCrossOver = licznoscPopulacji - iloscMutacji;
 				for (int i = 0; i <= iloscCrossOver / 2; i += 2)			//krzyzowanie
 				{
 					int a = rand() % licznoscPopulacji;
 					int b = rand() % licznoscPopulacji;
-					populus[a].krzyzowanie(populus[b].insta);
-				}*/
+					populus[a].krzyzowanie(populus[b].insta, 1);
+					populus[a].krzyzowanie(populus[b].insta, 2);
+				}
 			
 		_getch();
 		system("cls");
