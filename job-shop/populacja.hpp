@@ -19,8 +19,8 @@ public:
 
 	void wypisz();
 	void inicializuj(vector<zad> &oZad, vector<konserwacja> oKonserwa);
-	void krzyzowanie(instancja &b,int maszyna);
+	void krzyzowanie(instancja &b,int maszyna, vector<zad> &oZad, vector<konserwacja> oKonserwa);
 	void mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa);
 	int find(int zadanie,int maszyna);
-	
+	void zapisz();
 };
