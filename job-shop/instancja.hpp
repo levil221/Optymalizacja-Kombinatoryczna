@@ -15,12 +15,13 @@ public:
 		ile;
 	task **rozwiazanie;
 	czasOperacji **czas;
-	
+	vector<iddleTime> iddletime;
 
 	void inicjalizuj(vector<zad> oZad);
 	void wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad);
 	void wyswietl();
 	void update(int start, vector<zad> &oZad);
+	int findIndex(int zadanie, int maszyna);
 	instancja();
 	
 };

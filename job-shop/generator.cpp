@@ -78,7 +78,7 @@ void generator::zapisz()
 	file << przerwy.size() << "\n";
 	for (int i = 0; i <= ilosc_przerw; i++)
 	{
-		file << i << ";" << przerwy[i].time << ";" << przerwy[i].begin << ";" << przerwy[i].end << "\n";
+		file << i+1 << ";" << przerwy[i].time << ";" << przerwy[i].begin << ";" << przerwy[i].end << "\n";
 	}
 	file.close();
 }

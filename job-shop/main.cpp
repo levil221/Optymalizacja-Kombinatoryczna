@@ -19,7 +19,8 @@ int main()
 			buf;
 	int menu,
 		ilosc_zadan,
-		ilosc;
+		ilosc,
+		czasPoczatkowyUszeregowania;
 	cout << "1. Generuj instancje\n";
 	cout << "2. Rozwiaz instancje\n";
 	cin >>menu;
@@ -53,7 +54,7 @@ int main()
 		filename += ".txt";
 		ilosc = 0;
 		wczytaj(oZad, oKonserwa, filename, ilosc);
-		for (int i = 0; i <= licznoscPopulacji; i++)				//inicializacja
+		for (int i = 0; i < licznoscPopulacji; i++)				//inicializacja
 		{
 			tmp = new populacja;
 			tmp->insta.nr = i;
@@ -61,8 +62,8 @@ int main()
 			populus[i].inicializuj(oZad, oKonserwa);
 		}
 		for (int x = 0; x <= 300; x++)									//Ewolucja
-			{
-				for (int i = 0; i <= licznoscPopulacji / 2; i+=2)			//selekcja
+		{
+				for (int i = 0; i < licznoscPopulacji / 2; i+=2)			//selekcja
 				{
 					int a = populus[i].insta.czas_m1 < populus[i].insta.czas_m2 ? populus[i].insta.czas_m2 : populus[i].insta.czas_m1;
 					int b = populus[i + 1].insta.czas_m1 < populus[i + 1].insta.czas_m2 ? populus[i + 1].insta.czas_m2 : populus[i + 1].insta.czas_m1;
@@ -84,24 +85,33 @@ int main()
 					populus[a] = populus[b];
 					populus[b] = temp;
 				}
-				int iloscMutacji = rand() % (int)(licznoscPopulacji*0.2) + (int)(licznoscPopulacji*0.1);
-				for (int i = 0; i <= iloscMutacji; i += 2)					//mutacja
-				{
-					populus[rand() % licznoscPopulacji].mutacja(oZad,oKonserwa);
-				}
-				int iloscCrossOver = licznoscPopulacji - iloscMutacji;
-				for (int i = 0; i <= iloscCrossOver / 2; i += 2)			//krzyzowanie
-				{
-					int a = rand() % licznoscPopulacji;
-					int b = rand() % licznoscPopulacji;
-					populus[a].krzyzowanie(populus[b].insta, 1);
-					populus[a].krzyzowanie(populus[b].insta, 2);
-				}
-			
-		_getch();
-		system("cls");
-		for (int x = 0; x <= licznoscPopulacji; x++)
-			populus[x].wypisz();
+			int iloscMutacji = rand() % (int)(licznoscPopulacji*0.2) + (int)(licznoscPopulacji*0.1);
+			for (int i = 0; i <= iloscMutacji; i += 2)					//mutacja
+			{
+				populus[rand() % licznoscPopulacji].mutacja(oZad, oKonserwa);
+			}
+			int iloscCrossOver = licznoscPopulacji - iloscMutacji;
+			for (int i = 0; i <= iloscCrossOver / 2; i += 2)			//krzyzowanie
+			{
+				int a = rand() % licznoscPopulacji;
+				int b = rand() % licznoscPopulacji;
+					cout << "\n\t\tkrzyzowanie "<< a <<" z "<<b<<" przed: ";
+				//	populus[a].wypisz();
+				//	populus[b].wypisz();
+			//		cout << "\t \t po";
+				populus[a].krzyzowanie(populus[b], 1, oZad, oKonserwa);
+				populus[a].krzyzowanie(populus[b], 2, oZad, oKonserwa);
+				//	populus[a].wypisz();
+			//		populus[b].wypisz();
+			}
+
+			_getch();
+			system("cls");
+			for (int x = 0; x < licznoscPopulacji; x++)
+			{
+				populus[x].insta.wyliczCzas(oKonserwa, oZad);
+				populus[x].wypisz();
+			}
 		}
 	}
 	break;

@@ -19,8 +19,9 @@ public:
 
 	void wypisz();
 	void inicializuj(vector<zad> &oZad, vector<konserwacja> oKonserwa);
-	void krzyzowanie(instancja &b,int maszyna, vector<zad> &oZad, vector<konserwacja> oKonserwa);
+	void krzyzowanie(populacja &b,int maszyna, vector<zad> &oZad, vector<konserwacja> oKonserwa);
 	void mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa);
 	int find(int zadanie,int maszyna);
-	void zapisz();
+	int find2(int zadanie, int maszyna,task *roz);
+	void zapisz(fstream *file);
 };
