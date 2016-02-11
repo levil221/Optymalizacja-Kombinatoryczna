@@ -1,12 +1,9 @@
 #include "populacja.hpp"
-
+#include <assert.h>
 
 populacja::populacja()
 {
-}
-
-populacja::populacja(int ile)
-{
+	najlepszeRozwiazanie = false;
 }
 
 void populacja::wypisz()
@@ -16,7 +13,7 @@ void populacja::wypisz()
 
 void populacja::inicializuj(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 {
-	ilewpopulacji = oZad.size() - 1;
+		ilewpopulacji = oZad.size() - 1;
 	insta.inicjalizuj(oZad);
 	for (int i = 0; i < oZad.size(); i++)
 		oZad[i].czas_konca = 0;
@@ -31,6 +28,7 @@ void populacja::krzyzowanie(populacja &b,int maszyna, vector<zad> &oZad, vector<
 	task *tempTaska = new task[ilewpopulacji];
 	task *tempTaskb = new task[ilewpopulacji];
 	bool jest = false;
+	
 	
 	// tworzenie kopi tablic i tablicy pomocnicznej mowiecej co jes a cczego nie ma================================================
 	for (int i = 0; i < ilewpopulacji ; i++)// co mamy a czego nam brakuje
@@ -63,7 +61,7 @@ void populacja::krzyzowanie(populacja &b,int maszyna, vector<zad> &oZad, vector<
 			{
 				jest = true;
 				if (tabb[j] == 0)//szukamy brakujacego
-					for (int x = ilewpopulacji / 2 ; x < ilewpopulacji; x++)
+					for (int x = ilewpopulacji / 2 ; x <= ilewpopulacji; x++)
 						if (tempTaska[x].zadanie == j)//jak brakuje to srpawdzamy czy nie ma brakuajcego w liscie ktore zostana dodane
 						{
 							jest = true;//jak jest to szukamy nastepnego
@@ -112,7 +110,7 @@ void populacja::krzyzowanie(populacja &b,int maszyna, vector<zad> &oZad, vector<
 			}
 		}
 	}
-	insta.update(1, oZad);//musimy porpawic czasy bo kolejnsoc zadan inna
+	insta.ustawCzas(oZad);//musimy porpawic czasy bo kolejnsoc zadan inna
 	insta.wyliczCzas(oKonserwa, oZad);
 	for (int i = 0; i < oZad.size(); i++)
 		oZad[i].czas_konca = 0;
@@ -122,13 +120,14 @@ void populacja::mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 {
 	int a = rand() % ilewpopulacji +1,
 		b = rand() % ilewpopulacji + 1,
-		a1,a2,//indesky
-		b1,b2,//indeksy
+		a1,a2,//indesky zad 1
+		b1=-1,b2=-1,//indeksy zad 2
 		operacja,losowanie;
-	task taska1, taska2;//kopia zadania
-	czasOperacji czasa1, czasa2;//kopia czasu
+	task taska1, taska2;//kopie zadania
+	czasOperacji czasa1, czasa2;//kopie czasu
+	int test;
 
-	if (insta.rozwiazanie[1][find(a, 1)].operacja == 1)//jezeli na maszynie 1 opecaja 1 to szukamy na maszynie 1 zadania ktore rowniez ma op1
+      	if (insta.rozwiazanie[1][find(a, 1)].operacja == 1)//jezeli na maszynie 1 opecaja 1 to szukamy na maszynie 1 zadania ktore rowniez ma op1
 	{
 		a1 = find(a, 1);
 		a2 = find(a, 2);
@@ -142,51 +141,71 @@ void populacja::mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 		operacja = 2;
 	}
 	losowanie = find(b, 1);
-	if (insta.rozwiazanie[1][losowanie].operacja == operacja&& a != b)// sprawdzamy czy wylosowane zadanie posiada ta sama operacje na tej maszynie
+	if (insta.rozwiazanie[1][losowanie].operacja == operacja && a != b)// sprawdzamy czy wylosowane zadanie posiada ta sama operacje na tej maszynie
 	{
 		b1 = losowanie;
-		b2 = find(b, 2);
-		while (b2 < 0|| b2>ilewpopulacji)// czemu ~!@#!@#$@ nie dzialasz :c ? skad ten null !@#@
-			b2 = find(b, 2);
+		for (int i = 0; i <= ilewpopulacji; i++)
+			if (this->insta.rozwiazanie[2][i].zadanie == b)
+			{
+				b2 = i;
+				break;
+			}
+		if (b2<0 || b2>ilewpopulacji)
+			cout << "nie nzjaduje / !?";
 	}else
 			while (insta.rozwiazanie[1][losowanie].operacja != operacja )//szukaj az znajdzie
 		{
 			b = rand() % (ilewpopulacji-1) + 1;
 			while(a==b)
 				b = rand() % (ilewpopulacji-1) + 1;
-			losowanie = find(b, 1);
-			while (losowanie == NULL || losowanie > ilewpopulacji)
-				losowanie = find(b, 1);
-			if (insta.rozwiazanie[1][losowanie].operacja == operacja)
-			{
-				b1 = losowanie;
-				b2 = find(b, 2);
-				while(b2 < 0 || b2>ilewpopulacji)// czemu ~!@#!@#$@ nie dzialasz :c ? skad ten null !@#@
-					b2 = find(b, 2);
-			}
+			for (int i = 0; i <= ilewpopulacji; i++)
+				if (this->insta.rozwiazanie[1][i].zadanie == b)
+				{
+					losowanie = i;
+					break;
+				}
+
+			
+			
 		}
+	if (insta.rozwiazanie[1][losowanie].operacja == operacja)
+	{
+		b1 = losowanie;
+		for (int i = 0; i <= ilewpopulacji; i++)
+			if (this->insta.rozwiazanie[2][i].zadanie == b)
+			{
+				b2 = i;
+				break;
+			}
+
+		if (b2<0 || b2>ilewpopulacji)
+			cout << "nie nzjaduje / !?";
+	}
+	//assert(ilewpopulacji > b2 < 0);
 	//insta.wyswietl();//przed zmianmi
-	//====================================================zamieniamy
-//	cout << "\n zamiamiany na m1: " << insta.rozwiazanie[1][a1].zadanie << " z " << insta.rozwiazanie[1][losowanie].zadanie << endl;
-//	cout << " zamiamiany na m2: " << insta.rozwiazanie[2][a2].zadanie << " z " << insta.rozwiazanie[2][b2].zadanie << endl;
+	//====================================================		zamieniamy
+	//	cout << "\n zamiamiany na m1: " << insta.rozwiazanie[1][a1].zadanie << " z " << insta.rozwiazanie[1][losowanie].zadanie << endl;
+	//	cout << " zamiamiany na m2: " << insta.rozwiazanie[2][a2].zadanie << " z " << insta.rozwiazanie[2][b2].zadanie << endl;
 	//do tempa temp=a
 	taska1 = insta.rozwiazanie[1][a1];
 	czasa1 = insta.czas[1][a1];
 	taska2 = insta.rozwiazanie[2][a2];
 	czasa2 = insta.czas[2][a2];
-	//nadpisanie a=b
+	//===============================================		nadpisanie a=b
+	//cout << "\ndochodzi do nadpisania\n";
 	insta.rozwiazanie[1][a1] = insta.rozwiazanie[1][losowanie];
 	insta.czas[1][a1] = insta.czas[1][losowanie];
 	insta.rozwiazanie[2][a2] = insta.rozwiazanie[2][b2];
 	insta.czas[2][a2] = insta.czas[2][b2];
-	//zastapienie b=temp
+	//==============================================		zastapienie b=temp
 	insta.rozwiazanie[1][losowanie] = taska1;
 	insta.czas[1][losowanie] = czasa1;
 	insta.rozwiazanie[2][b2] = taska2;
 	insta.czas[2][b2] = czasa2;
-	insta.update(1,oZad);
+	insta.ustawCzas(oZad);
 	insta.wyliczCzas(oKonserwa,oZad);
-	//insta.wyswietl();// po zmianie
+	//insta.wyswietl();
+	//==============================================		po zmianie
 	for (int i = 0; i < oZad.size(); i++)
 		oZad[i].czas_konca = 0;
 
@@ -204,10 +223,5 @@ int populacja::find2(int zadanie, int maszyna, task *roz)
 	for (int i = 0; i < ilewpopulacji; i++)
 		if (roz[i].zadanie == zadanie)
 			return i;
-}
-
-void zapisz(fstream *file)
-{
-	
 }
 

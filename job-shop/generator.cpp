@@ -6,13 +6,13 @@ void generator::generujPrzerwy()
 {
 	
 	int podzial;
-	ilosc_przerw = rand()%(ilosc_zadan/2) +1;
+	ilosc_przerw = rand()%(ilosc_zadan/2)+1;
 	konserwacja temp;
 	
 	this->getTime();
 	podzial = czas_m2 / ilosc_przerw;
 	temp.end = 0;
-	for (int i = 0; i <= ilosc_przerw; i++)
+	for (int i = 0; i <=ilosc_przerw; i++)
 	{
 		
 		temp.begin = temp.end + rand()%120+20;
@@ -26,7 +26,7 @@ void generator::generujZadania()
 {
 	
 	zad temp;
-	for (int i = 0; i <= ilosc_zadan; i++)
+	for (int i = 0; i <=ilosc_zadan; i++)
 	{
 		temp.czas_op1 = rand()%100+1;
 		temp.czas_op2 = rand() % 100 + 1;
@@ -44,7 +44,7 @@ void generator::generujZadania()
 
 void generator::getTime()
 {
-	for (int i = 0; i <= ilosc_zadan; i++)
+	for (int i =0 ; i <ilosc_zadan; i++)
 	{
 		if (zadanie[i].maszyna_op1 == 1)
 		{
@@ -70,7 +70,7 @@ void generator::zapisz()
 	else
 	{
 		file << zadanie.size()-1<<"\n";
-		for (int i = 0; i <= ilosc_zadan; i++)
+		for (int i =0; i < ilosc_zadan; i++)
 		{
 			file << zadanie[i].czas_op1 << ";" << zadanie[i].czas_op2 << ";" << zadanie[i].maszyna_op1 << ";" << zadanie[i].maszyna_op2 << "\n";
 		}

@@ -1,4 +1,6 @@
 #include "instancja.hpp"
+#include <assert.h>
+#include <conio.h>
 
 void instancja::inicjalizuj(vector<zad> oZad)
 {
@@ -11,6 +13,8 @@ void instancja::inicjalizuj(vector<zad> oZad)
 		currenttime_m1=0,
 		currenttime_m2=0,
 		zapetlenie=0;
+	iddleTime *tempiddletime;
+
 	this->ile = oZad.size()-1;
 	///////////////////////////////////////init tablicy z rozwiazaniem i czasami
 	for (int i = 0; i <= 2; i++)
@@ -18,9 +22,9 @@ void instancja::inicjalizuj(vector<zad> oZad)
 	for (int i = 0; i <= 2; i++)
 		this->czas[i] = new czasOperacji[oZad.size()];
 	//////////////////////////////////////
-//	cout << "********************\n";
+	//cout << "********************\n";
 	////////////////////////////////////
-	for (int i = 0; i < oZad.size()-1; i++)
+	for (int i = 0; i < oZad.size()-1 ; i++)
 	{
 		zad1 = rand() % (oZad.size() - 1) + 1;
 		zad2 = rand() % (oZad.size() - 1) + 1;
@@ -176,7 +180,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 			zapetlenie++;
 		}
 		//debug only
-		//cout << this->rozwiazanie[1][i].zdanie<<"op"<< this->rozwiazanie[1][i].operacja <<"->" <<this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zdanie << "op" << this->rozwiazanie[2][i].operacja << "->"<< this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
+	//	cout << this->rozwiazanie[1][i].zadanie<<"op"<< this->rozwiazanie[1][i].operacja <<"->" <<this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zadanie << "op" << this->rozwiazanie[2][i].operacja << "->"<< this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
 	}
 	///////////////////////////////////////////
 	for (int i = 0; i < oZad.size()-1; i++)
@@ -191,6 +195,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 void instancja::wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad)
 {//================================================================================================
 	int licznik_przerw = 0,
+		licznik_czekania = 0,
 		nrzadania,
 		temp=0,
 		temptime,
@@ -198,6 +203,11 @@ void instancja::wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad)
 		finetime;
 	czas_m1 = this->czas[1][ile-1].end;
 	czas_m2 = 0;
+	iddleTime *tempiddletime;
+
+	if (!czasCzekania.empty())//czyscimy wczesneij zapisane przerwy
+		czasCzekania.clear();
+
 //=================================================================================================
 	for (int i = 0; i < ile; i++)
 	{
@@ -231,6 +241,16 @@ void instancja::wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad)
 			{
 				this->czas[2][i].begin = oKonserwa[licznik_przerw-1 ].end;	//czekamy wiec zaczyna sie po ostatniej przerwie na jaka naszedl
 				this->czas[2][i].end = temptime;
+				
+				tempiddletime = new iddleTime;
+				tempiddletime->begin = czas_m2;
+				tempiddletime->time = iddletime;
+				tempiddletime->end = tempiddletime->begin + tempiddletime->time;
+				czasCzekania.push_back(*tempiddletime);
+
+				iddleTime *newtemptime = new iddleTime;
+				newtemptime->time = iddletime;
+
 				this->czas_m2 = temptime;
 				//cout << "CZEKA-> ";
 			}
@@ -257,20 +277,20 @@ void instancja::wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad)
 
 void instancja::wyswietl()
 {
-	cout << "\ninit nr " << nr << "\nM1: ";
-	for (int i = 0; i <ile; i++)
-	{
-		cout << this->rozwiazanie[1][i].zadanie << "op"<< this->rozwiazanie[1][i].operacja<<" ";
+	cout << "\ninit nr " << nr ;
+	//for (int i = 0; i <ile; i++)
+//	{
+//		cout << this->rozwiazanie[1][i].zadanie << "op"<< this->rozwiazanie[1][i].operacja<<" ";
 
-	}
+//	}
 
 	cout << "\tczas: " << czas_m1;
-	cout << "\nM2: ";
-	for (int i = 0; i <ile; i++)
-	{
-		cout << this->rozwiazanie[2][i].zadanie << "op"<< this->rozwiazanie[2][i].operacja<<" ";
+//	cout << "\nM2: ";
+//	for (int i = 0; i <ile; i++)
+//	{
+//		cout << this->rozwiazanie[2][i].zadanie << "op"<< this->rozwiazanie[2][i].operacja<<" ";
 
-	}
+//	}
 	cout << "\tczas: " << czas_m2 << endl;
 	//for (int i = 0; i <ile; i++)
 	//cout << this->rozwiazanie[1][i].zadanie << "op" << this->rozwiazanie[1][i].operacja << "->" << this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zadanie << "op" << this->rozwiazanie[2][i].operacja << "->" << this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
@@ -286,12 +306,15 @@ void instancja::update(int start, vector<zad> &oZad)	// weryfikacja i update
 		this->czas[2][i].begin = czas[2][i - 1].end;
 		this->czas[2][i].end = czas[2][i].begin + czas[2][i].time;
 	}
-	for (int i = start + 1; i < ile; i++)// zazebianie sie czasow na m2
+	if (czas[1][start - 1].begin != 0)
+		czas[1][start - 1].begin = 0;
+	for (int i = start + 1; i < ile; i++)// zazebianie sie czasow na m1
 	{
 		this->czas[1][i].begin = czas[1][i - 1].end;
 		this->czas[1][i].end = czas[1][i].begin + czas[1][i].time;
 	}
 	
+
 	czas_m1 = this->czas[1][ile - 1].end;
 }
 
@@ -302,8 +325,66 @@ int instancja::findIndex(int zadanie, int maszyna)
 			return i;
 }
 
+void instancja::ustawCzas(vector<zad> &oZad)
+{
+	czas[1][0].begin = 0;
+	czas[2][0].begin = 0;
+	for (int i = 0; i < ile; i++)
+	{
+		//maszyna1=============
+		if (rozwiazanie[1][i].operacja == 1)
+		{
+			czas[1][i].begin = i - 1 < 0 ? 0 : czas[1][i - 1].end;
+			czas[1][i].time = oZad[rozwiazanie[1][i].zadanie].czas_op1;
+			czas[1][i].end = czas[1][i].begin + czas[1][i].time;
+		}
+		else
+		{
+			czas[1][i].begin = i - 1 < 0 ? 0 : czas[1][i - 1].end;
+			czas[1][i].time = oZad[rozwiazanie[1][i].zadanie].czas_op2;
+			czas[1][i].end = czas[1][i].begin + czas[1][i].time;
+		}
+		//maszyna2=============
+		if (rozwiazanie[2][i].operacja == 1)
+		{
+			czas[2][i].begin = i - 1 < 0 ? 0 : czas[2][i - 1].end;
+			czas[2][i].time = oZad[rozwiazanie[2][i].zadanie].czas_op1;
+			czas[2][i].end = czas[2][i].begin + czas[1][i].time;
+		}
+		else
+		{
+			czas[2][i].begin = i - 1 < 0 ? 0 : czas[2][i - 1].end;
+			czas[2][i].time = oZad[rozwiazanie[2][i].zadanie].czas_op2;
+			czas[2][i].end = czas[2][i].begin + czas[1][i].time;
+		}
+	}
+}
+
+void instancja::sprawdzPoprawnosc()
+{
+	int *tabObecnosciM1 = new int[ile];
+	int *tabObecnosciM2 = new int[ile];
+	for (int i = 0; i < ile; i++)
+	{
+		tabObecnosciM1[i] = 0;
+		tabObecnosciM2[i] = 0;
+		if (rozwiazanie[1][i].zadanie != NULL)
+			tabObecnosciM1[i] = 1;
+		else {
+			cout << "\nna M1 brak zadania i = " << i;
+			_getch();
+		}
+		if (rozwiazanie[2][i].zadanie != NULL)
+			tabObecnosciM2[i] = 1;
+		else {
+			cout << "\nna M1 brak zadania i = " << i;
+			_getch();
+		}
+	}
+}
+
 instancja::instancja()
 {
-	rozwiazanie = new task *[2];
-	czas = new czasOperacji *[2];
+	rozwiazanie = new task *[3];
+	czas = new czasOperacji *[3];
 }
