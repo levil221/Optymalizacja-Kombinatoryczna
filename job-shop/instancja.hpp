@@ -19,9 +19,9 @@ public:
 	vector<iddleTime> czasCzekaniaM1;
 
 	void inicjalizuj(vector<zad> oZad);
-	void wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad);
+	void wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad,int i,int _czasm2);
 	void wyswietl();
-	void update(int start);
+	void update(int start, vector<zad> &oZad);
 	int findIndex(int zadanie, int maszyna);
 	void ustawCzas(vector<zad> &oZad);
 	void sprawdzPoprawnosc();

@@ -17,7 +17,8 @@ void populacja::inicializuj(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 	insta.inicjalizuj(oZad);
 	for (int i = 0; i < oZad.size(); i++)
 		oZad[i].czas_konca = 0;
-	insta.wyliczCzas(oKonserwa,oZad);
+	insta.wyliczCzas(oKonserwa,oZad,0,0);
+	insta.poprawczasy(oZad, oKonserwa);
 	//insta.wyswietl();
 }
 
@@ -111,8 +112,13 @@ void populacja::krzyzowanie(populacja &b,int maszyna, vector<zad> &oZad, vector<
 		}
 	}
 	insta.ustawCzas(oZad);//musimy wyzerowac czasy bo kolejnsoc zadan inna
-	insta.wyliczCzas(oKonserwa, oZad);//wyliczamy czasy
+	insta.wyliczCzas(oKonserwa, oZad,0,0);//wyliczamy czasy
+	if (!insta.czasCzekaniaM1.empty())//czyscimy wczesneij zapisane przerwy
+		insta.czasCzekaniaM1.clear();
+	if (!insta.czasCzekaniaM2.empty())//czyscimy wczesneij zapisane przerwy
+		insta.czasCzekaniaM2.clear();
 	insta.poprawczasy(oZad, oKonserwa);//poprawiamy czasy
+//	insta.poprawczasy(oZad, oKonserwa);
 	for (int i = 0; i < oZad.size(); i++)
 		oZad[i].czas_konca = 0;
 	//================================================ zwalnianie pamieci
@@ -125,15 +131,25 @@ void populacja::krzyzowanie(populacja &b,int maszyna, vector<zad> &oZad, vector<
 
 void populacja::mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 {
+	//cout << " weszlo do mutacji ";
 	int a = rand() % ilewpopulacji +1,
 		b = rand() % ilewpopulacji + 1,
 		a1,a2,//indesky zad 1
 		b1=-1,b2=-1,//indeksy zad 2
-		operacja,losowanie,losowaniea,szukam=0;
+		operacja,losowanie=-1,losowaniea=-1,szukam=0;
 	task taska1, taska2;//kopie zadania
 	czasOperacji czasa1, czasa2;//kopie czasu
 	int test;
 	losowaniea = find(a, 1);
+	while (szukam < 100)
+	{
+		if (losowaniea<0 || losowaniea > ilewpopulacji)
+			losowaniea = find(a, 1);
+		else
+			break;
+		szukam++;
+	}
+	szukam = 0;
       	if (insta.rozwiazanie[1][losowaniea].operacja == 1)//jezeli na maszynie 1 opecaja 1 to szukamy na maszynie 1 zadania ktore rowniez ma op1
 	{
 		a1 = find(a, 1);
@@ -148,10 +164,15 @@ void populacja::mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 		operacja = 2;
 	}
 	losowanie = find(b, 1);
-	while (szukam<100)
-		if(losowanie<0 || losowanie > ilewpopulacji)
+	while (szukam < 100)
+	{
+		if (losowanie < 0 || losowanie > ilewpopulacji )
 			losowanie = find(b, 1);
-	if (insta.rozwiazanie[1][losowanie].operacja == operacja && a != b)// sprawdzamy czy wylosowane zadanie posiada ta sama operacje na tej maszynie
+		else
+			break;
+		szukam++;
+	}
+if (insta.rozwiazanie[1][losowanie].operacja == operacja && a != b)// sprawdzamy czy wylosowane zadanie posiada ta sama operacje na tej maszynie
 	{
 		b1 = losowanie;
 		for (int i = 0; i <= ilewpopulacji; i++)
@@ -165,6 +186,7 @@ void populacja::mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 	}else
 			while (insta.rozwiazanie[1][losowanie].operacja != operacja )//szukaj az znajdzie
 		{
+		//	cout << " szuka az znajdzie -> mutacja ";
 			b = rand() % (ilewpopulacji-1) + 1;
 			while(a==b)
 				b = rand() % (ilewpopulacji-1) + 1;
@@ -213,8 +235,14 @@ void populacja::mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 	insta.rozwiazanie[2][b2] = taska2;
 	insta.czas[2][b2] = czasa2;
 	insta.ustawCzas(oZad);				//zerujemy ustawienie czasu
-	insta.wyliczCzas(oKonserwa,oZad);   // wyliczamy czasy po zeriwaniu
+	insta.wyliczCzas(oKonserwa,oZad,0,0);   // wyliczamy czasy po zeriwaniu
+	if (!insta.czasCzekaniaM1.empty())//czyscimy wczesneij zapisane przerwy
+		insta.czasCzekaniaM1.clear();
+	if (!insta.czasCzekaniaM2.empty())//czyscimy wczesneij zapisane przerwy
+		insta.czasCzekaniaM2.clear();
 	insta.poprawczasy(oZad, oKonserwa);//naprawiamy czasy
+
+	//insta.poprawczasy(oZad, oKonserwa);
 	//insta.wyswietl();
 	//==============================================		po zmianie
 	for (int i = 0; i < oZad.size(); i++)
