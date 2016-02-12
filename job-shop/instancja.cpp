@@ -41,7 +41,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 				oZad[zad1].op1 = true;
 				dd = ++dodano;
 				mm = 1;
-				this->czas[1][i].begin =i-1<0 ? 0:this->czas[1][i - 1].end;
+				this->czas[1][i].begin =i-1 < 0 ? 0:this->czas[1][i - 1].end;
 				currenttime_m1+=this->czas[1][i].time = oZad[zad1].czas_op1;
 				oZad[zad1].czas_konca = this->czas[1][i].end = this->czas[1][i].time + this->czas[1][i].begin;
 				break;
@@ -53,7 +53,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 				oZad[zad1].op1 = true;
 				dd = ++dodano;
 				mm = 2;
-				this->czas[2][i].begin = i - 1<0 ? 0 : this->czas[2][i - 1].end;
+				this->czas[2][i].begin = i - 1 < 0 ? 0 : this->czas[2][i - 1].end;
 				currenttime_m2 += this->czas[2][i].time = oZad[zad1].czas_op1;
 				oZad[zad1].czas_konca = this->czas[2][i].end = this->czas[2][i].time + this->czas[2][i].begin;
 				break;
@@ -134,7 +134,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 					oZad[zad2].op1 = true;
 					dd = ++dodano;
 					
-						this->czas[1][i].begin = i - 1<0 ? 0 : this->czas[1][i - 1].end;
+						this->czas[1][i].begin = i - 1 < 0 ? 0 : this->czas[1][i - 1].end;
 						currenttime_m1 += this->czas[1][i].time = oZad[zad2].czas_op1;
 						oZad[zad2].czas_konca = this->czas[1][i].end = this->czas[1][i].time + this->czas[1][i].begin;
 					
@@ -205,8 +205,10 @@ void instancja::wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad)
 	czas_m2 = 0;
 	iddleTime *tempiddletime;
 
-	if (!czasCzekania.empty())//czyscimy wczesneij zapisane przerwy
-		czasCzekania.clear();
+	if (!czasCzekaniaM2.empty())//czyscimy wczesneij zapisane przerwy
+		czasCzekaniaM2.clear();
+	if (!czasCzekaniaM1.empty())//czyscimy wczesneij zapisane przerwy
+		czasCzekaniaM1.clear();
 
 //=================================================================================================
 	for (int i = 0; i < ile; i++)
@@ -246,11 +248,11 @@ void instancja::wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad)
 				tempiddletime->begin = czas_m2;
 				tempiddletime->time = iddletime;
 				tempiddletime->end = tempiddletime->begin + tempiddletime->time;
-				czasCzekania.push_back(*tempiddletime);
-
+				
 				iddleTime *newtemptime = new iddleTime;
 				newtemptime->time = iddletime;
-
+				czasCzekaniaM2.push_back(*newtemptime);
+				//delete tempiddletime;
 				this->czas_m2 = temptime;
 				//cout << "CZEKA-> ";
 			}
@@ -262,7 +264,7 @@ void instancja::wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad)
 
 			if (rozwiazanie[2][i].operacja == 1)
 				oZad[rozwiazanie[2][i].zadanie].czas_konca = czas_m2;
-			this->update(i, oZad);
+			this->update(i);
 		}else
 		{
 			czas_m2 += this->czas[2][i].time;
@@ -271,50 +273,47 @@ void instancja::wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad)
 		//oZad[rozwiazanie[2][i].zdanie].czas_konca = czas_m2;
 //=================================================================================================
 	//cout << this->rozwiazanie[1][i].zadanie << "op" << this->rozwiazanie[1][i].operacja << "->" << this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zadanie << "op" << this->rozwiazanie[2][i].operacja << "->" << this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
-		this->update(i, oZad);
+		this->update(i);
 	}
+	
 }
 
 void instancja::wyswietl()
 {
-	cout << "\ninit nr " << nr ;
-	//for (int i = 0; i <ile; i++)
-//	{
-//		cout << this->rozwiazanie[1][i].zadanie << "op"<< this->rozwiazanie[1][i].operacja<<" ";
+	//cout << "\ninit nr " << nr ;
+	/*for (int i = 0; i <ile; i++)
+	{
+		cout << this->rozwiazanie[1][i].zadanie << "op"<< this->rozwiazanie[1][i].operacja<<" ";
 
-//	}
+	}
 
 	cout << "\tczas: " << czas_m1;
-//	cout << "\nM2: ";
-//	for (int i = 0; i <ile; i++)
-//	{
-//		cout << this->rozwiazanie[2][i].zadanie << "op"<< this->rozwiazanie[2][i].operacja<<" ";
+	cout << "\nM2: ";
+	for (int i = 0; i <ile; i++)
+	{
+		cout << this->rozwiazanie[2][i].zadanie << "op"<< this->rozwiazanie[2][i].operacja<<" ";
 
-//	}
-	cout << "\tczas: " << czas_m2 << endl;
-	//for (int i = 0; i <ile; i++)
-	//cout << this->rozwiazanie[1][i].zadanie << "op" << this->rozwiazanie[1][i].operacja << "->" << this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zadanie << "op" << this->rozwiazanie[2][i].operacja << "->" << this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
+	}
+	cout << "\tczas: " << czas_m2 << endl;*/
+	for (int i = 0; i <ile; i++)
+	cout << this->rozwiazanie[1][i].zadanie << "op" << this->rozwiazanie[1][i].operacja << "->" << this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zadanie << "op" << this->rozwiazanie[2][i].operacja << "->" << this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
 }
 
-void instancja::update(int start, vector<zad> &oZad)	// weryfikacja i update
+void instancja::update(int start)	// weryfikacja i update
 {
-	int findtask = -1;
-	bool findtaskif;
-
 	for (int i = start + 1; i < ile; i++)// zazebianie sie czasow na m2
 	{
 		this->czas[2][i].begin = czas[2][i - 1].end;
 		this->czas[2][i].end = czas[2][i].begin + czas[2][i].time;
 	}
-	if (czas[1][start - 1].begin != 0)
-		czas[1][start - 1].begin = 0;
+	//if (czas[1][start - 1].begin != 0)
+	//	czas[1][start - 1].begin = 0;
 	for (int i = start + 1; i < ile; i++)// zazebianie sie czasow na m1
 	{
 		this->czas[1][i].begin = czas[1][i - 1].end;
 		this->czas[1][i].end = czas[1][i].begin + czas[1][i].time;
 	}
 	
-
 	czas_m1 = this->czas[1][ile - 1].end;
 }
 
@@ -383,8 +382,40 @@ void instancja::sprawdzPoprawnosc()
 	}
 }
 
+void instancja::poprawczasy(vector<zad>& oZad, vector<konserwacja> oKonserwa)
+{
+	for (int i = 0; i < ile; i++)
+	{
+		if (czas[1][i].begin < oZad[rozwiazanie[1][i].zadanie].czas_konca && rozwiazanie[1][i].operacja == 2)
+			{
+				czas[1][i].begin = oZad[rozwiazanie[1][i].zadanie].czas_konca;
+				iddleTime *newtemptime = new iddleTime;
+				newtemptime->time = czas[1][i].begin - czas[1][i - 1].end;
+				czasCzekaniaM1.push_back(*newtemptime);
+				update(i);
+				wyliczCzas(oKonserwa, oZad);
+			}
+		if (czas[2][i].begin < oZad[rozwiazanie[2][i].zadanie].czas_konca && rozwiazanie[2][i].operacja == 2)
+		{
+			czas[2][i].begin = oZad[rozwiazanie[2][i].zadanie].czas_konca;
+			iddleTime *newtemptime = new iddleTime;
+			newtemptime->time = czas[2][i].begin - czas[2][i - 1].end;
+			czasCzekaniaM2.push_back(*newtemptime);
+			update(i);
+			wyliczCzas(oKonserwa, oZad);
+		}
+	}
+}
+
 instancja::instancja()
 {
 	rozwiazanie = new task *[3];
 	czas = new czasOperacji *[3];
+}
+
+instancja::~instancja()
+{
+	
+	//delete[] rozwiazanie;
+	//delete[] czas;
 }

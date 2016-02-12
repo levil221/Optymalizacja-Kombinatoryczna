@@ -1,14 +1,3 @@
-﻿  instancja.cpp
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(27): warning C4018: '<': signed/unsigned mismatch
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(186): warning C4018: '<': signed/unsigned mismatch
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(16): warning C4101: 'tempiddletime': unreferenced local variable
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(216): warning C4018: '<': signed/unsigned mismatch
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(220): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(226): warning C4018: '<': signed/unsigned mismatch
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(228): warning C4018: '<': signed/unsigned mismatch
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(232): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(237): warning C4018: '<': signed/unsigned mismatch
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(199): warning C4101: 'nrzadania': unreferenced local variable
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(302): warning C4101: 'findtaskif': unreferenced local variable
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\instancja.cpp(326): warning C4715: 'instancja::findIndex': not all control paths return a value
-  job-shop.vcxproj -> C:\Users\Krzysztof\Documents\GitHub\Optymalizacja-Kombinatoryczna\job-shop\Debug\job-shop.exe
+﻿  main.cpp
+c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\main.cpp : fatal error C1041: cannot open program database 'C:\Users\Krzysztof\Documents\GitHub\Optymalizacja-Kombinatoryczna\job-shop\Debug\vc140.idb'; if multiple CL.EXE write to the same .PDB file, please use /FS
+cl : Command line warning D9028: minimal rebuild failure, reverting to normal build

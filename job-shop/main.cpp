@@ -67,8 +67,10 @@ int main()
 			tmp = new populacja;
 			tmp->insta.nr = i;
 			populus.push_back(*tmp);
+			//delete tmp;
 			populus[i].inicializuj(oZad, oKonserwa);
 			populus[i].insta.sprawdzPoprawnosc();
+		//	populus[i].wypisz();
 		}
 		//===============================================		Ewolucja
 		for (int x =0; x <= 300; x++)									
@@ -84,6 +86,7 @@ int main()
 						memcpy(tmp, &populus[i], sizeof(populacja));
 						populus[i + 1] = *tmp;
 						populus[i].najlepszeRozwiazanie = true;
+						//delete tmp;
 					}
 					else
 					{
@@ -91,6 +94,7 @@ int main()
 						memcpy(tmp, &populus[i+1], sizeof(populacja));
 						populus[i] = *tmp;
 						populus[i].najlepszeRozwiazanie = true;
+						//delete tmp;
 					}
 				}
 
@@ -109,19 +113,19 @@ int main()
 			int iloscMutacji = rand() % (int)(licznoscPopulacji*0.2) + (int)(licznoscPopulacji*0.1);
 			for (int i = 0; i <= iloscMutacji; i += 2)					
 			{
-				//cout << "stoi na mutacji beg" << endl;
+				cout << "stoi na mutacji beg" << endl;
 				int czynajlepsze = rand() % licznoscPopulacji;
 				while (populus[czynajlepsze].najlepszeRozwiazanie == true)// nie chcemy zmienaic najlepszego rozwiazania
 					czynajlepsze = rand() % licznoscPopulacji;
 				populus[czynajlepsze].mutacja(oZad, oKonserwa);
-				//cout << "stoi na mutacji end " << endl;
+				cout << "stoi na mutacji end " << endl;
 			}
 
 			//=========================================		krzyzowanie
 			int iloscCrossOver = licznoscPopulacji - iloscMutacji;
 			for (int i = 0; i <= iloscCrossOver / 2; i += 2)			
 			{
-				//	cout << "stoi na krzyzowaniu beg" << endl;
+				cout << "stoi na krzyzowaniu beg" << endl;
 				int a = rand() % licznoscPopulacji;
 				int b = rand() % licznoscPopulacji;
 			
@@ -137,19 +141,20 @@ int main()
 				populus[a].krzyzowanie(populus[b], 2, oZad, oKonserwa);
 				//	populus[a].wypisz();
 				//	populus[b].wypisz();
-				//	cout << "stoi na krzyzowaniu end" << endl;
+					cout << "stoi na krzyzowaniu end" << endl;
 			}
 					
 			//======================================		konczenie ewolucji
 			for (int k = 0; k < licznoscPopulacji; k++)
 			{
 				populus[k].insta.wyliczCzas(oKonserwa, oZad);
-				//	populus[k].wypisz();
+				//populus[k].wypisz();
 				populus[k].najlepszeRozwiazanie = false;
 			}
 
 			//=====================================		poszukiwanie najlepszego rozwiazania
 			najlepszeUszeregowanie(populus, najlepszeRozwiazanie,licznoscPopulacji,poczatkowaWartoscUporzadkowania);
+			//najlepszeRozwiazanie.wypisz();
 			//cout << "\n\n Najlepsze rozwiazanie: \t\tm1: " << najlepszeRozwiazanie.insta.czas_m1 << "\t\tm2: " << najlepszeRozwiazanie.insta.czas_m2;
 			
 			
@@ -161,6 +166,8 @@ int main()
 		}
 		//=======================================		zapis
 		zapisz(najlepszeRozwiazanie, filename, oKonserwa,licznoscPopulacji,poczatkowaWartoscUporzadkowania);
+		
+		
 	}
 	break;
 	}
@@ -245,16 +252,23 @@ void zapisz(populacja populus,string filename, vector<konserwacja> oKonserwa, in
 		file << populus.insta.czas[2][i].begin << ", " << populus.insta.czas[2][i].time << ", " << populus.insta.czas[2][i].end << "; ";
 	}
 	//================================================		przerwy konserwacyjne
-	file << "\nLaczna_liczba_przerw_konserwacyjnych_M1: 0, ich_sumaryczny_czas_trwania: 0";
+	file << "\nLaczna_liczba_przerw_konserwacyjnych_M1: 0, ich_sumaryczny_czas_trwania: 0";// 0 bo w zadaniuu sa tylko na 2
 	for (int i = 0; i <= oKonserwa.size() - 1; i++) tempcalc += oKonserwa[i].time;
 	file << "\nLaczna_liczba_przerw_konserwacyjnych_M2: " << oKonserwa.size() - 1 << ", ich_sumaryczny_czas_trwania: "<<tempcalc;
 	//================================================		Przerwy typu iddle 
 	tempcalc = 0;
-	file << "\nLaczna_liczba_przerw_iddle_M1: 0, ich_sumaryczny_czas_trwania: 0";
-	if (!populus.insta.czasCzekania.empty())
+	if (!populus.insta.czasCzekaniaM1.empty())
 	{
-		for (int i = 0; i <= populus.insta.czasCzekania.size() - 1; i++) tempcalc += populus.insta.czasCzekania[i].time;
-		file << "\nLaczna_liczba_przerw_iddle_M2: " << populus.insta.czasCzekania.size()-1 << ", ich_sumaryczny_czas_trwania: " << tempcalc;
+		for (int i = 0; i <= populus.insta.czasCzekaniaM1.size() - 1; i++) tempcalc += populus.insta.czasCzekaniaM1[i].time;
+		file << "\nLaczna_liczba_przerw_iddle_M1: " << populus.insta.czasCzekaniaM1.size() - 1 << ", ich_sumaryczny_czas_trwania: " << tempcalc;
+	}
+	else
+		file << "\nLaczna_liczba_przerw_iddle_M1: 0, ich_sumaryczny_czas_trwania: 0";
+	tempcalc = 0;
+	if (!populus.insta.czasCzekaniaM2.empty())
+	{
+		for (int i = 0; i <= populus.insta.czasCzekaniaM2.size() - 1; i++) tempcalc += populus.insta.czasCzekaniaM2[i].time;
+		file << "\nLaczna_liczba_przerw_iddle_M2: " << populus.insta.czasCzekaniaM2.size()-1 << ", ich_sumaryczny_czas_trwania: " << tempcalc;
 	}
 	else
 		file << "\nLaczna_liczba_przerw_iddle_M2: 0, ich_sumaryczny_czas_trwania: 0";

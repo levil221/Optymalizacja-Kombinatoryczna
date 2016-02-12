@@ -110,10 +110,17 @@ void populacja::krzyzowanie(populacja &b,int maszyna, vector<zad> &oZad, vector<
 			}
 		}
 	}
-	insta.ustawCzas(oZad);//musimy porpawic czasy bo kolejnsoc zadan inna
-	insta.wyliczCzas(oKonserwa, oZad);
+	insta.ustawCzas(oZad);//musimy wyzerowac czasy bo kolejnsoc zadan inna
+	insta.wyliczCzas(oKonserwa, oZad);//wyliczamy czasy
+	insta.poprawczasy(oZad, oKonserwa);//poprawiamy czasy
 	for (int i = 0; i < oZad.size(); i++)
 		oZad[i].czas_konca = 0;
+	//================================================ zwalnianie pamieci
+	//delete[] taba;
+	//delete[] tabb;
+	//delete[] tempTaska;
+	//delete[] tempTaskb;
+
 }
 
 void populacja::mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa)
@@ -122,12 +129,12 @@ void populacja::mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 		b = rand() % ilewpopulacji + 1,
 		a1,a2,//indesky zad 1
 		b1=-1,b2=-1,//indeksy zad 2
-		operacja,losowanie;
+		operacja,losowanie,losowaniea,szukam=0;
 	task taska1, taska2;//kopie zadania
 	czasOperacji czasa1, czasa2;//kopie czasu
 	int test;
-
-      	if (insta.rozwiazanie[1][find(a, 1)].operacja == 1)//jezeli na maszynie 1 opecaja 1 to szukamy na maszynie 1 zadania ktore rowniez ma op1
+	losowaniea = find(a, 1);
+      	if (insta.rozwiazanie[1][losowaniea].operacja == 1)//jezeli na maszynie 1 opecaja 1 to szukamy na maszynie 1 zadania ktore rowniez ma op1
 	{
 		a1 = find(a, 1);
 		a2 = find(a, 2);
@@ -141,6 +148,9 @@ void populacja::mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 		operacja = 2;
 	}
 	losowanie = find(b, 1);
+	while (szukam<100)
+		if(losowanie<0 || losowanie > ilewpopulacji)
+			losowanie = find(b, 1);
 	if (insta.rozwiazanie[1][losowanie].operacja == operacja && a != b)// sprawdzamy czy wylosowane zadanie posiada ta sama operacje na tej maszynie
 	{
 		b1 = losowanie;
@@ -202,8 +212,9 @@ void populacja::mutacja(vector<zad> &oZad, vector<konserwacja> oKonserwa)
 	insta.czas[1][losowanie] = czasa1;
 	insta.rozwiazanie[2][b2] = taska2;
 	insta.czas[2][b2] = czasa2;
-	insta.ustawCzas(oZad);
-	insta.wyliczCzas(oKonserwa,oZad);
+	insta.ustawCzas(oZad);				//zerujemy ustawienie czasu
+	insta.wyliczCzas(oKonserwa,oZad);   // wyliczamy czasy po zeriwaniu
+	insta.poprawczasy(oZad, oKonserwa);//naprawiamy czasy
 	//insta.wyswietl();
 	//==============================================		po zmianie
 	for (int i = 0; i < oZad.size(); i++)
