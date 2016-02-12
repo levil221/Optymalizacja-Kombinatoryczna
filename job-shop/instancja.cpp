@@ -24,7 +24,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 	//////////////////////////////////////
 	//cout << "********************\n";
 	////////////////////////////////////
-	for (int i = 0; i < oZad.size()-1 ; i++)
+	for (int i = 0; i < ile ; i++)
 	{
 		zad1 = rand() % (oZad.size() - 1) + 1;
 		zad2 = rand() % (oZad.size() - 1) + 1;
@@ -183,7 +183,7 @@ void instancja::inicjalizuj(vector<zad> oZad)
 		//cout << this->rozwiazanie[1][i].zadanie<<"op"<< this->rozwiazanie[1][i].operacja <<"->" <<this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zadanie << "op" << this->rozwiazanie[2][i].operacja << "->"<< this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
 	}
 	///////////////////////////////////////////
-	for (int i = 0; i < oZad.size()-1; i++)
+	for (int i = 0; i < ile; i++)
 	{
 		oZad[i].op1 = false;
 		oZad[i].op2 = false;
@@ -295,7 +295,7 @@ void instancja::wyliczCzas(vector<konserwacja> oKonserwa, vector<zad> &oZad,int 
 
 void instancja::wyswietl()
 {
-	cout << "\ninit nr " << nr ;
+	cout << "\ninit nr " << nr<<endl ;
 	for (int i = 0; i <ile; i++)
 	{
 		cout << this->rozwiazanie[1][i].zadanie << "op"<< this->rozwiazanie[1][i].operacja<<" ";
@@ -310,8 +310,8 @@ void instancja::wyswietl()
 
 	}
 	cout << "\tczas: " << czas_m2 << endl;
-	//for (int i = 0; i <ile; i++)
-	//cout << this->rozwiazanie[1][i].zadanie << "op" << this->rozwiazanie[1][i].operacja << "->" << this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zadanie << "op" << this->rozwiazanie[2][i].operacja << "->" << this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
+	for (int i = 0; i <ile; i++)
+	cout << this->rozwiazanie[1][i].zadanie << "op" << this->rozwiazanie[1][i].operacja << "->" << this->czas[1][i].begin << " " << this->czas[1][i].time << " " << this->czas[1][i].end << "|" << this->rozwiazanie[2][i].zadanie << "op" << this->rozwiazanie[2][i].operacja << "->" << this->czas[2][i].begin << " " << this->czas[2][i].time << " " << this->czas[2][i].end << "\n";
 	//cout << "************************** " << czas_m2 << endl;
 }
 
@@ -321,8 +321,8 @@ void instancja::update(int start, vector<zad> &oZad)	// weryfikacja i update
 	{
 		this->czas[2][i].begin = czas[2][i - 1].end;
 		this->czas[2][i].end = czas[2][i].begin + czas[2][i].time;
-		if (rozwiazanie[2][i].operacja == 1)
-			oZad[rozwiazanie[2][i].zadanie].czas_konca = czas[2][i].end;
+		//if (rozwiazanie[2][i].operacja == 1)
+			//oZad[rozwiazanie[2][i].zadanie].czas_konca = czas[2][i].end;
 	}
 	//if (czas[1][start - 1].begin != 0)
 	//	czas[1][start - 1].begin = 0;
@@ -330,8 +330,8 @@ void instancja::update(int start, vector<zad> &oZad)	// weryfikacja i update
 	{
 		this->czas[1][i].begin = czas[1][i - 1].end;
 		this->czas[1][i].end = czas[1][i].begin + czas[1][i].time;
-		if (rozwiazanie[1][i].operacja == 1)
-			oZad[rozwiazanie[1][i].zadanie].czas_konca = czas[1][i].end;
+		//if (rozwiazanie[1][i].operacja == 1)
+			//oZad[rozwiazanie[1][i].zadanie].czas_konca = czas[1][i].end;
 	}
 	
 	czas_m1 = this->czas[1][ile - 1].end;
@@ -348,6 +348,8 @@ void instancja::ustawCzas(vector<zad> &oZad)
 {
 	czas[1][0].begin = 0;
 	czas[2][0].begin = 0;
+	czas_m1 = 0;
+	czas_m2 = 0;
 	for (int i = 0; i < ile; i++)
 	{
 		//maszyna1=============
@@ -409,13 +411,13 @@ void instancja::sprawdzPoprawnosc()
 		poprawnadlugosc2 += czas[2][i].time;
 	}
 
-	if (czas_m1 != czas[1][ile - 1].end)
+	if (czas_m1 != czas[1][ile ].end)
 	{
 		czas_m1 = czas[1][ile - 1].end;//bledne obliczenie czasu, wiec naprawiamy
 	//	cout << " czas szeregowania inny niz faktycznie M~1 ! poprawione ! " << endl;
 	//	_getch();
 	}
-	if (czas_m2 != czas[2][ile - 1].end)
+	if (czas_m2 != czas[2][ile].end)
 	{
 		czas_m2 = czas[2][ile - 1].end;//bledne obliczenie czasu, wiec naprawiamy
 	//	cout << "czas szeregowania inny niz faktycznie M~2! poprawione ! " << endl;
@@ -458,8 +460,8 @@ void instancja::poprawczasy(vector<zad>& oZad, vector<konserwacja> oKonserwa)
 				{
 					this->czas[1][j].begin = czas[1][j - 1].end;
 					this->czas[1][j].end = czas[1][j].begin + czas[1][j].time;
-					if (rozwiazanie[1][j].operacja == 1)
-						oZad[rozwiazanie[1][j].zadanie].czas_konca = czas[1][j].end;
+					//if (rozwiazanie[1][j].operacja == 1)
+						//oZad[rozwiazanie[1][j].zadanie].czas_konca = czas[1][j].end;
 				}
 
 				
@@ -483,8 +485,8 @@ void instancja::poprawczasy(vector<zad>& oZad, vector<konserwacja> oKonserwa)
 			{
 				this->czas[2][j].begin = czas[2][j - 1].end;
 				this->czas[2][j].end = czas[2][j].begin + czas[2][j].time;
-				if (rozwiazanie[2][j].operacja == 1)
-					oZad[rozwiazanie[2][j].zadanie].czas_konca = czas[2][j].end;
+				//if (rozwiazanie[2][j].operacja == 1)
+					//oZad[rozwiazanie[2][j].zadanie].czas_konca = czas[2][j].end;
 			}
 			wyliczCzas(oKonserwa, oZad, i, czas[2][i].begin);
 			for (int j = 0; j < ile; j++)
@@ -504,6 +506,31 @@ instancja::instancja()
 {
 	rozwiazanie = new task *[3];
 	czas = new czasOperacji *[3];
+}
+
+instancja::instancja(const instancja &do_skopiowania)//konstruktor kopiujacy
+{//=====================================================		podstawowe
+	ile = do_skopiowania.ile;
+	nr = do_skopiowania.nr;
+	czas_m1 = do_skopiowania.czas_m1;
+	czas_m2 = do_skopiowania.czas_m2;
+	czasCzekaniaM1 = do_skopiowania.czasCzekaniaM1;
+	czasCzekaniaM2 = do_skopiowania.czasCzekaniaM2;
+	//=================================================		inicjacja
+	rozwiazanie = new task *[3];
+	czas = new czasOperacji *[3];
+	for (int i = 0; i <= 2; i++)
+		this->rozwiazanie[i] = new task[ile];
+	for (int i = 0; i <= 2; i++)
+		this->czas[i] = new czasOperacji[ile];
+	//===============================================		kopiwanie tablic z rozwiazaniem
+	for (int i = 0; i < ile; i++)
+	{
+		rozwiazanie[1][i] = do_skopiowania.rozwiazanie[1][i];
+		rozwiazanie[2][i] = do_skopiowania.rozwiazanie[2][i];
+		czas[1][i] = do_skopiowania.czas[1][i];
+		czas[2][i] = do_skopiowania.czas[2][i];
+	}
 }
 
 instancja::~instancja()

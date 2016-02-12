@@ -27,6 +27,7 @@ public:
 	void sprawdzPoprawnosc();
 	void poprawczasy(vector<zad> &oZad, vector<konserwacja> oKonserwa);
 	instancja();
+	instancja(const instancja &do_skopiowania);
 	~instancja();
 	
 };

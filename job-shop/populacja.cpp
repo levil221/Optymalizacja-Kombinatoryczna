@@ -6,6 +6,14 @@ populacja::populacja()
 	najlepszeRozwiazanie = false;
 }
 
+populacja::populacja(const populacja &do_skopiowania)//konstrunktor kopiujacy
+{
+	instancja *nowy = new instancja(do_skopiowania.insta);
+	insta = *nowy;
+	ilewpopulacji = do_skopiowania.ilewpopulacji;
+	najlepszeRozwiazanie = do_skopiowania.najlepszeRozwiazanie;
+}
+
 void populacja::wypisz()
 {
 	insta.wyswietl();

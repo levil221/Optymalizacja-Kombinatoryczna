@@ -16,6 +16,7 @@ public:
 	bool najlepszeRozwiazanie;
 public:
 	populacja();
+	populacja(const populacja &do_skopiowania);
 	void wypisz();
 	void inicializuj(vector<zad> &oZad, vector<konserwacja> oKonserwa);
 	void krzyzowanie(populacja &b, int maszyna, vector<zad> &oZad, vector<konserwacja> oKonserwa);

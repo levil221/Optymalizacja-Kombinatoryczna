@@ -1,8 +1,8 @@
 ﻿  main.cpp
 c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\main.cpp(18): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\main.cpp(26): warning C4101: 'czasPoczatkowyUszeregowania': unreferenced local variable
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\main.cpp(269): warning C4018: '<=': signed/unsigned mismatch
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\main.cpp(275): warning C4018: '<': signed/unsigned mismatch
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\main.cpp(283): warning C4018: '<': signed/unsigned mismatch
-c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\main.cpp(295): warning C4018: '<=': signed/unsigned mismatch
+c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\main.cpp(268): warning C4018: '<=': signed/unsigned mismatch
+c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\main.cpp(274): warning C4018: '<': signed/unsigned mismatch
+c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\main.cpp(282): warning C4018: '<': signed/unsigned mismatch
+c:\users\krzysztof\documents\github\optymalizacja-kombinatoryczna\job-shop\main.cpp(294): warning C4018: '<=': signed/unsigned mismatch
   job-shop.vcxproj -> C:\Users\Krzysztof\Documents\GitHub\Optymalizacja-Kombinatoryczna\job-shop\Debug\job-shop.exe

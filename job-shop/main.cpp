@@ -71,6 +71,7 @@ int main()
 			populus[i].inicializuj(oZad, oKonserwa);
 			populus[i].insta.sprawdzPoprawnosc();
 		//	populus[i].wypisz();
+			cout << i << endl;
 		}
 		najlepszeUszeregowanie(populus, *najlepszeRozwiazanie, licznoscPopulacji, poczatkowaWartoscUporzadkowaniam1, poczatkowaWartoscUporzadkowaniam2,poczatkoweUszeregowanie);//najlepsze losowe uszeregowanie
 		//===============================================		Ewolucja
@@ -83,16 +84,14 @@ int main()
 					int b = populus[i + 1].insta.czas_m1 < populus[i + 1].insta.czas_m2 ? populus[i + 1].insta.czas_m2 : populus[i + 1].insta.czas_m1;
 					if (a < b)
 					{
-						tmp = new populacja;
-						memcpy(tmp, &populus[i], sizeof(populacja));
+						tmp = new populacja(populus[i]);
 						populus[i + 1] = *tmp;
 						populus[i].najlepszeRozwiazanie = true;
 						//delete tmp;
 					}
 					else
 					{
-						tmp = new populacja;
-						memcpy(tmp, &populus[i+1], sizeof(populacja));
+						tmp = new populacja(populus[i+1]);
 						populus[i] = *tmp;
 						populus[i].najlepszeRozwiazanie = true;
 						//delete tmp;
@@ -115,7 +114,7 @@ int main()
 			for (int i = 0; i <= iloscMutacji; i += 2)					
 			{
 				int zapetlenie = 0;
-				//cout << "stoi na mutacji beg" << endl;
+				cout << "stoi na mutacji beg" << endl;
 				int czynajlepsze = rand() % licznoscPopulacji;
 				while (populus[czynajlepsze].najlepszeRozwiazanie == true|| zapetlenie <1000)// nie chcemy zmienaic najlepszego rozwiazania
 				{
@@ -131,7 +130,7 @@ int main()
 			int iloscCrossOver = licznoscPopulacji - iloscMutacji;
 			for (int i = 0; i <= iloscCrossOver / 2; i += 2)			
 			{
-			//	cout << "stoi na krzyzowaniu beg" << endl;
+				cout << "stoi na krzyzowaniu beg" << endl;
 				int a = rand() % licznoscPopulacji;
 				int b = rand() % licznoscPopulacji;
 			
@@ -147,7 +146,7 @@ int main()
 				populus[a].krzyzowanie(populus[b], 2, oZad, oKonserwa);
 				//	populus[a].wypisz();
 				//	populus[b].wypisz();
-			//		cout << "stoi na krzyzowaniu end" << endl;
+					cout << "stoi na krzyzowaniu end" << endl;
 			}
 					
 			//======================================		konczenie ewolucji
@@ -155,13 +154,13 @@ int main()
 			{
 				populus[k].insta.sprawdzPoprawnosc(); // sprawdzanie poprawosciu
 				//populus[k].insta.wyliczCzas(oKonserwa, oZad);
-			//	populus[k].wypisz();
+				//populus[k].wypisz();
 				populus[k].najlepszeRozwiazanie = false;
 			}
 
 			//=====================================		poszukiwanie najlepszego rozwiazania
-			najlepszeUszeregowanie(populus, *najlepszeRozwiazanie,licznoscPopulacji,poczatkowaWartoscUporzadkowaniam1, poczatkowaWartoscUporzadkowaniam2,poczatkoweUszeregowanie);
-			//najlepszeRozwiazanie.wypisz();
+			najlepszeUszeregowanie(populus, *najlepszeRozwiazanie, licznoscPopulacji,poczatkowaWartoscUporzadkowaniam1, poczatkowaWartoscUporzadkowaniam2,poczatkoweUszeregowanie);
+			//najlepszeRozwiazanie->wypisz();
 			//cout << "\n\n Najlepsze rozwiazanie: \t\tm1: " << najlepszeRozwiazanie.insta.czas_m1 << "\t\tm2: " << najlepszeRozwiazanie.insta.czas_m2;
 			
 			
@@ -252,14 +251,14 @@ void zapisz(populacja *populus,string filename, vector<konserwacja> oKonserwa, i
 	file << "\n";
 	//==================================================	M1
 	file << "M1: ";
-	for (int i = 0; i <licznosc-1; i++)
+	for (int i = 0; i <licznosc; i++)
 	{
 		file << populus->insta.rozwiazanie[1][i].zadanie <<"op"<< populus->insta.rozwiazanie[1][i].operacja << " - ";
 		file << populus->insta.czas[1][i].begin <<", "<< populus->insta.czas[1][i].time <<", "<< populus->insta.czas[1][i].end << "; ";
 	}
 	//==================================================	M2
 	file << "\nM2: ";
-	for (int i = 0; i < licznosc-1; i++)
+	for (int i = 0; i < licznosc; i++)
 	{
 		file <<  populus->insta.rozwiazanie[2][i].zadanie << "op" << populus->insta.rozwiazanie[2][i].operacja << " - ";
 		file << populus->insta.czas[2][i].begin << ", " << populus->insta.czas[2][i].time << ", " << populus->insta.czas[2][i].end << "; ";
@@ -273,7 +272,7 @@ void zapisz(populacja *populus,string filename, vector<konserwacja> oKonserwa, i
 	if (!populus->insta.czasCzekaniaM1.empty())
 	{
 		for (int i = 0; i < populus->insta.czasCzekaniaM1.size() ; i++) tempcalc += populus->insta.czasCzekaniaM1[i].time;
-		file << "\nLaczna_liczba_przerw_iddle_M1: " << populus->insta.czasCzekaniaM1.size()-1  << ", ich_sumaryczny_czas_trwania: " << tempcalc;
+		file << "\nLaczna_liczba_przerw_iddle_M1: " << populus->insta.czasCzekaniaM1.size()  << ", ich_sumaryczny_czas_trwania: " << tempcalc;
 	}
 	else
 		file << "\nLaczna_liczba_przerw_iddle_M1: 0, ich_sumaryczny_czas_trwania: 0";
@@ -281,7 +280,7 @@ void zapisz(populacja *populus,string filename, vector<konserwacja> oKonserwa, i
 	if (!populus->insta.czasCzekaniaM2.empty())
 	{
 		for (int i = 0; i < populus->insta.czasCzekaniaM2.size() ; i++) tempcalc += populus->insta.czasCzekaniaM2[i].time;
-		file << "\nLaczna_liczba_przerw_iddle_M2: " << populus->insta.czasCzekaniaM2.size()-1 << ", ich_sumaryczny_czas_trwania: " << tempcalc;
+		file << "\nLaczna_liczba_przerw_iddle_M2: " << populus->insta.czasCzekaniaM2.size() << ", ich_sumaryczny_czas_trwania: " << tempcalc;
 	}
 	else
 		file << "\nLaczna_liczba_przerw_iddle_M2: 0, ich_sumaryczny_czas_trwania: 0";
@@ -336,8 +335,7 @@ void najlepszeUszeregowanie(vector<populacja> pointer, populacja &najlepsze, int
 		if (a < b)
 		{
 
-			populacja *nowy = new populacja;
-			memcpy(nowy, &pointer[i], sizeof(populacja));
+			populacja *nowy = new populacja(pointer[i]);
 			najlepsze = *nowy;
 			/*if (najlepsze.insta.czas_m1 != najlepsze.insta.czas[1][liczebnosc - 2].end)
 			{
